@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
+import ptBR from "date-fns/locale/pt-BR";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
+
+registerLocale("pt-BR", ptBR);
 
 export default function App() {
   const [telaAtual, setTelaAtual] = useState("login");
@@ -23,6 +26,7 @@ export default function App() {
     "09:00","10:00","11:00",
     "14:00","15:00","16:00",
     "17:00","18:00","19:00",
+    "20:00","21:00"
   ];
 
   const diasDisponiveis = [
@@ -146,6 +150,9 @@ export default function App() {
           <DatePicker
             selected={dataSelecionada}
             onChange={(date) => setDataSelecionada(date)}
+            locale="pt-BR"
+            dateFormat="dd/MM/yyyy"
+            calendarStartDay={1}
             placeholderText="Clique para selecionar a data"
             dayClassName={(date) => {
               const disponivel = diasDisponiveis.some(
