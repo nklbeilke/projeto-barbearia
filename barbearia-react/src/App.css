@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #199fb7;
+  font-family: Arial, sans-serif;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 20px;
+}
+
+.containerApp {
+  width: 375px;
+  background-color: #199fb7;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.titulo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  width: 100px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.botao {
+  width: 100%;
+  padding: 12px;
+  background-color: #fff;
+  color: #199fb7;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.botaoSecundario {
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.scrollView {
+  margin-bottom: 20px;
+}
+
+.cardServico {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  color: #199fb7;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.infoServico h2,
+.infoServico h3 {
+  margin: 5px 0;
+}
+
+.calendarContainer {
+  margin-bottom: 20px;
+}
+
+.tituloHorario {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.containerHorarios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.botaoHorario {
+  font-family: "Inter", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  cursor: pointer;
+}
+
+.botaoHorarioSelecionado {
+  background-color: #fff;
+  color: #199fb7;
+}
+
+.dia-disponivel {
+  background-color: #4caf50 !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+}
+
+.dia-indisponivel {
+  background-color: #f44336 !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+}
