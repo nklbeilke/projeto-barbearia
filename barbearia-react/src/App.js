@@ -4,203 +4,135 @@ import ptBR from "date-fns/locale/pt-BR";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 
-registerLocale("pt-BR", ptBR);
-
-export default function App() {
-  const [telaAtual, setTelaAtual] = useState("login");
+registerLocale("pt-BR", ptBR); //Idioma do calendário
+function App() {
+  const [tela, setTela] = useState("login");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [servicoSelecionado, setServicoSelecionado] = useState(null);
-  const [dataSelecionada, setDataSelecionada] = useState(null);
-  const [horaSelecionada, setHoraSelecionada] = useState("");
-
+  const [servico, setServico] = useState(null);
+  const [data, setData] = useState(null);
+  const [hora, setHora] = useState("");
   const servicos = [
-    { id: 1, nome: "Cabelo", preco: "R$ 35,00" },
-    { id: 2, nome: "Cabelo + Barba", preco: "R$ 65,00" },
-    { id: 3, nome: "Barba", preco: "R$ 35,00" },
-    { id: 4, nome: "Corte + Barba + Sobrancelha", preco: "R$ 70,00" },
-    { id: 5, nome: "Cabelo + Sobrancelha", preco: "R$ 40,00" },
+  { id: 1, nome: "Cabelo", preco: "R$ 35,00" },
+  { id: 2, nome: "Cabelo + Barba", preco: "R$ 65,00" },
+  { id: 3, nome: "Barba", preco: "R$ 35,00" },
+  { id: 4, nome: "Corte + Barba + Sobrancelha", preco: "R$ 70,00" },
+  { id: 5, nome: "Cabelo + Sobrancelha", preco: "R$ 40,00" },
   ];
-
-  const horarios = [
-    "09:00","10:00","11:00",
-    "14:00","15:00","16:00",
-    "17:00","18:00","19:00",
-    "20:00","21:00"
-  ];
-
+  const horarios = ["09:00","10:00","11:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
   const diasDisponiveis = [
     new Date(2026, 1, 10),
     new Date(2026, 1, 11),
     new Date(2026, 1, 12),
     new Date(2026, 1, 13),
   ];
-
-  const handleLogin = () => {
-    if (email && senha) {
-      setTelaAtual("servicos");
-    } else {
+  function fazerLogin() {
+    if (!email || !senha) {
       alert("Preencha email e senha");
-    }
-  };
-
-  const handleSelecionarServico = (servico) => {
-    setServicoSelecionado(servico);
-    setTelaAtual("agendamento");
-  };
-
-  const handleConfirmarAgendamento = () => {
-    if (!dataSelecionada || !horaSelecionada) {
-      alert("Selecione uma data e horário");
       return;
     }
-
-    const dataFormatada = dataSelecionada.toLocaleDateString("pt-BR");
-
+    setTela("servicos");
+  }
+  function escolherServico(item) {
+    setServico(item);
+    setTela("agendamento");
+  }
+  function confirmarAgendamento() {
+    if (!data || !hora) {
+      alert("Selecione a data e o horário");
+      return;
+    }
     alert(
-      `Agendamento Confirmado!\n\nServiço: ${servicoSelecionado.nome}\nData: ${dataFormatada}\nHorário: ${horaSelecionada}`
+      `Agendamento Confirmado!\n\nServiço: ${servico.nome}\nData: ${data.toLocaleDateString(
+        "pt-BR"
+      )}\nHorário: ${hora}`
     );
-
-    setTelaAtual("servicos");
-    setDataSelecionada(null);
-    setHoraSelecionada("");
-  };
-
+    setTela("servicos");
+    setData(null);
+    setHora("");
+  }
 //Tela login
-  if (telaAtual === "login") {
+  if (tela === "login") {
     return (
       <div className="containerApp">
-        <h1 className="titulo">N&B Barbearia</h1>
-
-        <div className="logo">
-          <img src="/logo.png" alt="Logo" />
-        </div>
-
+        <img src="/logo.png" alt="Logo" className="logo" />
+        <h1>N&B Barbearia</h1>
         <input
-          className="input"
           placeholder="Email"
-          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-
         <input
-          className="input"
           placeholder="Senha"
           type="password"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         />
-
-        <button className="botao" onClick={handleLogin}>
-          Entrar
-        </button>
+        <button onClick={fazerLogin}>Entrar</button>
       </div>
     );
   }
-
 //Tela serviços
-  if (telaAtual === "servicos") {
+  if (tela === "servicos") {
     return (
       <div className="containerApp">
-        <h1 className="titulo">Nossos Serviços</h1>
+        <h1>Nossos Serviços</h1>
+        {servicos.map((item) => (
+          <div
+            key={item.id}
+            className="cardServico"
+            onClick={() => escolherServico(item)}
+          >
+            <span>{item.nome}</span>
+            <span>{item.preco}</span>
+          </div>
+        ))}
 
-        <div className="scrollView">
-          {servicos.map((servico) => (
-            <div
-              key={servico.id}
-              className="cardServico"
-              onClick={() => handleSelecionarServico(servico)}
-            >
-              <span>{servico.nome}</span>
-              <span>{servico.preco}</span>
-            </div>
-          ))}
-        </div>
-
-        <button
-          className="botaoSecundario"
-          onClick={() => setTelaAtual("login")}
-        >
-          Sair
-        </button>
+        <button onClick={() => setTela("login")}>Sair</button>
       </div>
     );
   }
-
 //Tela agendamento
-  if (telaAtual === "agendamento") {
-    const dataFormatada = dataSelecionada
-      ? dataSelecionada.toLocaleDateString("pt-BR")
-      : "";
-
+  if (tela === "agendamento") {
     return (
       <div className="containerApp">
-        <h1 className="titulo">Agendar Horário</h1>
-
-        <div className="infoServico">
-          <p>Serviço selecionado:</p>
-          <h2>{servicoSelecionado.nome}</h2>
-          <h3>{servicoSelecionado.preco}</h3>
-        </div>
-
-        <div className="calendarContainer">
-          <p>Selecione a Data:</p>
-
-          <DatePicker
-            selected={dataSelecionada}
-            onChange={(date) => setDataSelecionada(date)}
-            locale="pt-BR"
-            dateFormat="dd/MM/yyyy"
-            calendarStartDay={1}
-            placeholderText="Clique para selecionar a data"
-            dayClassName={(date) => {
-              const disponivel = diasDisponiveis.some(
-                (d) =>
-                  d.getDate() === date.getDate() &&
-                  d.getMonth() === date.getMonth() &&
-                  d.getFullYear() === date.getFullYear()
-              );
-              return disponivel ? "dia-disponivel" : "dia-indisponivel";
-            }}
-          />
-
-          {dataSelecionada && (
-            <p className="dataSelecionada">
-              Data escolhida: {dataFormatada}
-            </p>
-          )}
-        </div>
-
-        <p className="tituloHorario">Selecione o Horário:</p>
-
-        <div className="containerHorarios">
-          {horarios.map((hora) => (
+        <h1>Agendar Horário</h1>
+        <p><strong>Serviço:</strong> {servico.nome}</p>
+        <p><strong>Preço:</strong> {servico.preco}</p>
+        <p>Selecione a data:</p>
+        <DatePicker
+          selected={data}
+          onChange={setData}
+          locale="pt-BR"
+          dateFormat="dd/MM/yyyy"
+          placeholderText="Clique para escolher"
+          dayClassName={(dia) => {
+            const disponivel = diasDisponiveis.some(
+              (d) =>
+                d.getDate() === dia.getDate() &&
+                d.getMonth() === dia.getMonth() &&
+                d.getFullYear() === dia.getFullYear()
+            );
+            return disponivel ? "dia-disponivel" : "dia-indisponivel";
+          }}
+        />
+        <p>Selecione o horário:</p>
+        <div>
+          {horarios.map((h) => (
             <button
-              key={hora}
-              className={`botaoHorario ${
-                horaSelecionada === hora ? "botaoHorarioSelecionado" : ""
-              }`}
-              onClick={() => setHoraSelecionada(hora)}
+              key={h}
+              className={h === hora ? "botaoHorarioSelecionado" : "botaoHorario"}
+              onClick={() => setHora(h)}
             >
-              {hora}
+              {h}
             </button>
           ))}
         </div>
-
-        <button className="botao" onClick={handleConfirmarAgendamento}>
-          Confirmar Agendamento
-        </button>
-
-        <button
-          className="botaoSecundario"
-          onClick={() => setTelaAtual("servicos")}
-        >
-          Voltar
-        </button>
+        <button onClick={confirmarAgendamento}>Confirmar Agendamento</button>
+        <button onClick={() => setTela("servicos")}>Voltar</button>
       </div>
     );
   }
-
   return null;
 }
+export default App;
