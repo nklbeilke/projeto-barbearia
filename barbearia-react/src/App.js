@@ -18,6 +18,8 @@ function App() {
   { id: 3, nome: "Barba", preco: "R$ 35,00" },
   { id: 4, nome: "Corte + Barba + Sobrancelha", preco: "R$ 70,00" },
   { id: 5, nome: "Cabelo + Sobrancelha", preco: "R$ 40,00" },
+  { id: 5, nome: "Nevou", preco: "R$ 150,00" },
+  { id: 5, nome: "Blindado", preco: "R$ 150,00" },
   ];
   const horarios = ["09:00","10:00","11:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00"];
   const diasDisponiveis = [
@@ -83,11 +85,10 @@ function App() {
             className="cardServico"
             onClick={() => escolherServico(item)}
           >
-            <span>{item.nome}</span>
-            <span>{item.preco}</span>
+            <div>{item.nome}</div>
+            <div>{item.preco}</div>
           </div>
         ))}
-
         <button onClick={() => setTela("login")}>Sair</button>
       </div>
     );
@@ -100,12 +101,20 @@ function App() {
         <p><strong>Serviço:</strong> {servico.nome}</p>
         <p><strong>Preço:</strong> {servico.preco}</p>
         <p>Selecione a data:</p>
-        <DatePicker
+<DatePicker
           selected={data}
           onChange={setData}
           locale="pt-BR"
           dateFormat="dd/MM/yyyy"
-          placeholderText="Clique para escolher"
+          placeholderText="Selecione a data desejada"
+          filterDate={(dia) => {
+            return diasDisponiveis.some(
+              (d) =>
+                d.getDate() === dia.getDate() &&
+                d.getMonth() === dia.getMonth() &&
+                d.getFullYear() === dia.getFullYear()
+            );
+          }}
           dayClassName={(dia) => {
             const disponivel = diasDisponiveis.some(
               (d) =>
